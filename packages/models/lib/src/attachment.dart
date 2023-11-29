@@ -4,17 +4,28 @@ import 'package:uuid/uuid.dart';
 enum AttachmentType { image, video, audio }
 
 class Attachment extends Equatable {
-  final String id;
-  final String messageId;
-  final AttachmentType type;
-  final String attachmentUrl;
-
   const Attachment({
     required this.id,
     required this.messageId,
     required this.type,
     required this.attachmentUrl,
   });
+
+  factory Attachment.fromJson(Map<String, dynamic> json) {
+    return Attachment(
+      id: json['id'] as String? ?? const Uuid().v4(),
+      messageId: json['messageId'] as String? ?? '',
+      type: AttachmentType.values.firstWhere(
+        (e) => e.toString().split('.').last == json['type'],
+        orElse: () => AttachmentType.image,
+      ),
+      attachmentUrl: json['attachmentUrl'] as String? ?? '',
+    );
+  }
+  final String id;
+  final String messageId;
+  final AttachmentType type;
+  final String attachmentUrl;
 
   Attachment copyWith({
     String? id,
@@ -27,18 +38,6 @@ class Attachment extends Equatable {
       messageId: messageId ?? this.messageId,
       type: type ?? this.type,
       attachmentUrl: attachmentUrl ?? this.attachmentUrl,
-    );
-  }
-
-  factory Attachment.fromJson(Map<String, dynamic> json) {
-    return Attachment(
-      id: json['id'] ?? const Uuid().v4(),
-      messageId: json['messageId'] ?? '',
-      type: AttachmentType.values.firstWhere(
-        (e) => e.toString().split('.').last == json['type'],
-        orElse: () => AttachmentType.image,
-      ),
-      attachmentUrl: json['attachmentUrl'] ?? '',
     );
   }
 

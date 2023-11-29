@@ -3,17 +3,27 @@ import 'package:models/models.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatRoom extends Equatable {
-  final String id;
-  final List<User> participants;
-  final Message lastMessage;
-  final int unreadCount;
-
   const ChatRoom({
     required this.id,
     required this.participants,
     required this.lastMessage,
     required this.unreadCount,
   });
+
+  factory ChatRoom.fromJson(Map<String, dynamic> json) {
+    return ChatRoom(
+      id: json['id'] as String? ?? const Uuid().v4(),
+      participants: (json['participants'] is List)
+          ? (json['participants'] as List<Map<String, dynamic>>).map<User>((user) => User.fromJson(user)).toList()
+          : [],
+      lastMessage: Message.fromJson(json['last_message'] as Map<String, dynamic>? ?? {}),
+      unreadCount: json['unread_count'] as int? ?? 0,
+    );
+  }
+  final String id;
+  final List<User> participants;
+  final Message lastMessage;
+  final int unreadCount;
 
   ChatRoom copyWith({
     String? id,
@@ -26,19 +36,6 @@ class ChatRoom extends Equatable {
       participants: participants ?? this.participants,
       lastMessage: lastMessage ?? this.lastMessage,
       unreadCount: unreadCount ?? this.unreadCount,
-    );
-  }
-
-  factory ChatRoom.fromJson(Map<String, dynamic> json) {
-    return ChatRoom(
-      id: json['id'] ?? const Uuid().v4(),
-      participants: (json['participants'] is List)
-          ? json['participants']
-              .map<User>((user) => User.fromJson(user))
-              .toList()
-          : [],
-      lastMessage: Message.fromJson(json['last_message'] ?? {}),
-      unreadCount: json['unread_count'] ?? 0,
     );
   }
 

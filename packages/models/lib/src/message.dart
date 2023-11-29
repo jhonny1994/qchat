@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:models/models.dart';
 import 'package:uuid/uuid.dart';
-
-import '../models.dart';
 
 class Message extends Equatable {
   final String? id;
@@ -44,15 +43,13 @@ class Message extends Equatable {
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
-      id: json['id'] ?? const Uuid().v4(),
-      chatRoomId: json['chat_room_id'] ?? '',
-      senderUserId: json['sender_user_id'] ?? '',
-      receiverUserId: json['receiver_user_id'] ?? '',
-      content: json['content'],
-      attachment: json['attachment'] != null
-          ? Attachment.fromJson(json['attachment'])
-          : null,
-      createdAt: DateTime.parse(json['created_at']),
+      id: json['id'] as String? ?? const Uuid().v4(),
+      chatRoomId: json['chat_room_id'] as String? ?? '',
+      senderUserId: json['sender_user_id'] as String? ?? '',
+      receiverUserId: json['receiver_user_id'] as String? ?? '',
+      content: json['content'] as String?,
+      attachment: json['attachment'] != null ? Attachment.fromJson(json['attachment'] as Map<String, dynamic>) : null,
+      createdAt: DateTime.parse(json['created_at'] as String),
     );
   }
 

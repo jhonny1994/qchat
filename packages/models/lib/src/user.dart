@@ -38,13 +38,12 @@ class User extends Equatable {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] ?? const Uuid().v4(),
-      username: json['username'] ?? '',
-      phone: json['phone'] ?? '',
-      email: json['email'] ?? '',
-      avatarUrl:
-          json['avatar_url'] ?? 'https://source.unsplash.com/random/?profile',
-      status: json['status'] ?? '',
+      id: json['id'] as String? ?? const Uuid().v4(),
+      username: json['username'] as String? ?? '',
+      phone: json['phone'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+      avatarUrl: json['avatar_url'] as String? ?? 'https://source.unsplash.com/random/?profile',
+      status: json['status'] as String? ?? '',
     );
   }
 
@@ -62,14 +61,3 @@ class User extends Equatable {
   @override
   List<Object?> get props => [id, username, phone, email, avatarUrl, status];
 }
-
-
-// [{
-//   chat_room_id: 8baf5ca2-e254-49e6-ac97-70e40559574d, 
-//   participant_id: a6d06c87-a657-4473-b223-d5d53e895e15, 
-//   users: {
-//     id: a6d06c87-a657-4473-b223-d5d53e895e15, 
-//     updated_at: null, username: null, 
-//     email: null, phone: 971583060255, avatar_url: null}
-//   }
-// ], 
